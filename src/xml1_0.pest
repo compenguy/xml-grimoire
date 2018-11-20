@@ -1,0 +1,337 @@
+// # W3C Extensible Markup Language (XML) 1.0 (Fifth Edition)
+// ## Reference: https://www.w3.org/TR/2008/REC-xml-20081126/
+// ### Last updated: 2013-02-07
+// ## Latest version: https://www.w3.org/TR/xml/
+
+// # Document
+// [1](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-document)
+// `document   ::=   prolog element Misc*`
+
+document = { prolog ~ element ~ Misc* }
+
+// # Character Range
+// [2](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-Char)
+// `Char   ::=   #x9 | #xA | #xD | [#x20-#xD7FF] | [#xE000-#xFFFD] | [#x10000-#x10FFFF]`
+// * any Unicode character, excluding the surrogate blocks, FFFE, and FFFF.
+
+Char = _{ "\u{0009}" | "\u{000A}" | "\u{000D}" |
+          '\u{0020}'..'\u{D7FF}' | '\u{E000}'..'\u{FFFD}' |
+          '\u{10000}'..'\u{10FFFF}' }
+
+// Document authors are encouraged to avoid "compatibility characters",
+// as defined in section 2.3 of
+// [Unicode](https://www.w3.org/TR/2008/REC-xml-20081126/#Unicode).
+//
+// The characters defined in the following ranges are also discouraged.
+// They are either control characters or permanently undefined Unicode
+// characters:
+// ```
+// [#x7F-#x84], [#x86-#x9F], [#xFDD0-#xFDEF],
+// [#x1FFFE-#x1FFFF], [#x2FFFE-#x2FFFF], [#x3FFFE-#x3FFFF],
+// [#x4FFFE-#x4FFFF], [#x5FFFE-#x5FFFF], [#x6FFFE-#x6FFFF],
+// [#x7FFFE-#x7FFFF], [#x8FFFE-#x8FFFF], [#x9FFFE-#x9FFFF],
+// [#xAFFFE-#xAFFFF], [#xBFFFE-#xBFFFF], [#xCFFFE-#xCFFFF],
+// [#xDFFFE-#xDFFFF], [#xEFFFE-#xEFFFF], [#xFFFFE-#xFFFFF],
+// [#x10FFFE-#x10FFFF]
+// ```
+
+DiscouragedChars = { '\u{007F}'..'\u{0084}' | '\u{0086}'..'\u{009F}' |
+                     '\u{FDD0}'..'\u{FDEF}' | '\u{1FFFE}'..'\u{1FFFF}' |
+                     '\u{2FFFE}'..'\u{2FFFF}' | '\u{3FFFE}'..'\u{3FFFF}' |
+                     '\u{4FFFE}'..'\u{4FFFF}' | '\u{5FFFE}'..'\u{5FFFF}' |
+                     '\u{6FFFE}'..'\u{6FFFF}' | '\u{7FFFE}'..'\u{7FFFF}' |
+                     '\u{8FFFE}'..'\u{8FFFF}' | '\u{9FFFE}'..'\u{9FFFF}' |
+                     '\u{AFFFE}'..'\u{AFFFF}' | '\u{BFFFE}'..'\u{BFFFF}' |
+                     '\u{CFFFE}'..'\u{CFFFF}' | '\u{DFFFE}'..'\u{DFFFF}' |
+                     '\u{EFFFE}'..'\u{EFFFF}' | '\u{FFFFE}'..'\u{FFFFF}' |
+                     '\u{10FFFE}'..'\u{10FFFF}' }
+
+// # White Space
+// [3](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-S)
+// `S   ::=   (#x20 | #x9 | #xD | #xA)+`
+
+S = _{ "\u{0020}" | "\u{0009}" | "\u{000D}" | "\u{000A}" }
+
+// # Names and Tokens
+// [4](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-NameStartChar)
+// `NameStartChar   ::=   ":" | [A-Z] | "_" | [a-z] | [#xC0-#xD6] | [#xD8-#xF6] | [#xF8-#x2FF] | [#x370-#x37D] | [#x37F-#x1FFF] | [#x200C-#x200D] | [#x2070-#x218F] | [#x2C00-#x2FEF] | [#x3001-#xD7FF] | [#xF900-#xFDCF] | [#xFDF0-#xFFFD] | [#x10000-#xEFFFF]`
+
+NameStartChar = { ":" | 'A'..'Z' | "_" | 'a'..'z' | '\u{00C0}'..'\u{00D6}' |
+                  '\u{00D8}'..'\u{00F6}' | '\u{00F8}'..'\u{02FF}' |
+                  '\u{0370}'..'\u{037D}' | '\u{037F}'..'\u{1FFF}' |
+                  '\u{200C}'..'\u{200D}' | '\u{2070}'..'\u{218F}' |
+                  '\u{2C00}'..'\u{2FEF}' | '\u{3001}'..'\u{D7FF}' |
+                  '\u{F900}'..'\u{FDCF}' | '\u{FDF0}'..'\u{FFFD}' |
+                  '\u{10000}'..'\u{EFFFF}' }
+
+// [4a](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-NameChar)
+// `NameChar   ::=   NameStartChar | "-" | "." | [0-9] | #xB7 | [#x0300-#x036F] | [#x203F-#x2040]`
+
+NameChar = _{ NameStartChar | "-" | "." | '0'..'9' | "\u{00B7}" |
+              '\u{0300}'..'\u{036F}' | '\u{203F}'..'\u{2040}' }
+
+// [5](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-Name)
+// `Name   ::=   NameStartChar (NameChar)*`
+
+Name = { NameStartChar ~ NameChar* }
+
+// [6](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-Names)
+// `Names   ::=   Name (#x20 Name)*`
+
+Names = _{ Name ~ ("\u{0020}" ~ Name)* }
+
+// [7](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-Nmtoken)
+// `Nmtoken   ::=   (NameChar)+`
+
+Nmtoken = { NameChar+ }
+
+// [8](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-Nmtokens)
+// `Nmtokens   ::=   Nmtoken (#x20 Nmtoken)*`
+
+Nmtokens = _{ Nmtoken ~ ("\u{0020}" ~ Nmtoken)* }
+
+// # Literals
+// [9](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-EntityValue)
+// `EntityValue   ::=   '"' ([^%&"] | PEReference | Reference)* '"' |  "'" ([^%&'] | PEReference | Reference)* "'"`
+
+EntityValue = { ("\"" ~ ( (!("%" | "&" | "\"") ~ Char) | PEReference | Reference)* ~ "\"") |
+                ("'" ~ ( (!("%" | "&" | "'") ~ Char) | PEReference | Reference)* ~ "'") }
+
+// [10](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-AttValue)
+// `AttValue   ::=   '"' ([^<&"] | Reference)* '"' |  "'" ([^<&'] | Reference)* "'"`
+
+AttValue = { ("\"" ~ ( (!("<" | "&" | "\"") ~ Char) | Reference)* ~ "\"") |
+             ("'" ~ ( (!("<" | "&" | "'") ~ Char) | Reference)* ~ "'") }
+
+// [11](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-SystemLiteral)
+// `SystemLiteral   ::=   ('"' [^"]* '"') | ("'" [^']* "'")`
+
+SystemLiteral = { ("\"" ~ (!"\"" ~ Char)* ~ "\"") |
+                  ("'" ~ (!"'" ~ Char)* ~ "'") }
+
+// [12](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-PubidLiteral)
+// `PubidLiteral   ::=   '"' PubidChar* '"' | "'" (PubidChar - "'")* "'"`
+
+PubidLiteral = { ("\"" ~ PubidChar* ~ "\"") |
+                 ("'" ~ PubidChar* ~ "'") }
+
+// [13](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-PubidChar)
+// `PubidChar   ::=   #x20 | #xD | #xA | [a-zA-Z0-9] | [-'()+,./:=?;!*#@$_%]`
+
+PubidChar = _{ "\u{0020}" | "\u{000D}" | "\u{000A}" |
+               'a'..'z' | 'A'..'Z' | '0'..'9' | "-" |
+               "'" | "(" | ")" | "+" | "," | "." |
+               "/" | ":" | "=" | "?" | ";" | "!" | "*" |
+               "#" | "@" | "$" | "_" | "%" }
+
+// # Character Data
+// [14](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-CharData)
+// `CharData   ::=   [^<&]* - ([^<&]* ']]>' [^<&]*)`
+
+// non-standard helper production to express [^<&]
+_non_tag_entity_start_char = _{ !("<" | "&") ~ Char }
+// Pest expresses A - B syntax instead as !B ~ A
+CharData = { !((!CDEnd ~ _non_tag_entity_start_char)* ~ CDEnd) ~ _non_tag_entity_start_char* }
+
+// # Comments
+// [15](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-Comment)
+// `Comment   ::=   '<!--' ((Char - '-') | ('-' (Char - '-')))* '-->'`
+
+// Pest expresses A - B syntax instead as !B ~ A
+Comment = { "<!--" ~ ( (!"-" ~ Char) | ("-" ~ (!"-" ~ Char)))* ~ "-->" }
+
+// # Processing Instructions
+// [16](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-PI)
+// `PI   ::=   '<?' PITarget (S (Char* - (Char* '?>' Char*)))? '?>'`
+
+// TODO: PI not properly matching
+// non-standard helper production to express (Char* - (Char* '?>' Char*))
+_pi_data = { !(Char* ~ "?>" ~ Char*) ~ Char* }
+// Pest expresses A - B syntax instead as !B ~ A
+PI = { "<?" ~ PITarget ~ (S ~ (_pi_data))? ~ "?>" }
+
+// [17](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-PITarget)
+// `PITarget   ::=   Name - (('X' | 'x') ('M' | 'm') ('L' | 'l'))`
+
+// Pest expresses A - B syntax instead as !B ~ A
+PITarget = { !( ("X" | "x") ~ ("M" | "m") ~ ("L" | "l") ) ~ Name }
+
+// CDATA Sections
+// [18](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-CDSect)
+// `CDSect   ::=   CDStart CData CDEnd`
+
+//TODO: Figure out why this doesn't parse either
+CDSect = { CDStart ~ CData ~ CDEnd }
+
+// [19](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-CDStart)
+// `CDStart   ::=   '<![CDATA['`
+
+CDStart = { "<![CDATA[" }
+
+// [20](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-CData)
+// `CData   ::=   (Char* - (Char* ']]>' Char*))`
+
+// Pest expresses A - B syntax instead as !B ~ A
+CData = { !(Char * ~ CDEnd ~ Char *) ~ Char* }
+
+// [21](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-CDEnd)
+// `CDEnd   ::=   ']]>'`
+
+CDEnd = { "]]>" }
+
+// # Prolog
+// [22](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-prolog)
+// `prolog   ::=   XMLDecl? Misc* (doctypedecl Misc*)?`
+
+prolog = { XMLDecl? ~ Misc* ~ (doctypedecl ~ Misc*)? }
+
+// [23](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-XMLDecl)
+// `XMLDecl   ::=   '<?xml' VersionInfo EncodingDecl? SDDecl? S? '?>'`
+
+XMLDecl = { "<?xml" ~ VersionInfo ~ EncodingDecl? ~ SDDecl? ~ S? ~ "?>" }
+
+// [24](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-VersionInfo)
+// `VersionInfo   ::=   S 'version' Eq ("'" VersionNum "'" | '"' VersionNum '"')`
+
+VersionInfo = { S ~ "version" ~ Eq ~ (("'" ~ VersionNum ~ "'") | ("\"" ~ VersionNum ~ "\"")) }
+
+// [25](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-Eq)
+// `Eq   ::=   S? '=' S?`
+
+Eq = { S? ~ "=" ~ S? }
+
+// [26](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-VersionNum)
+// `VersionNum   ::=   '1.' [0-9]+`
+
+VersionNum = { "1." ~ ('0'..'9')+ }
+
+// [27](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-Misc)
+// `Misc   ::=   Comment | PI | S`
+
+Misc = { Comment | PI | S }
+
+// # Document Type Definition
+// [28](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-doctypedecl)
+// `doctypedecl   ::=   '<!DOCTYPE' S Name (S ExternalID)? S? ('[' intSubset ']' S?)? '>'`
+
+doctypedecl = { "<!DOCTYPE" ~ S ~ Name ~ (S ~ ExternalID)? ~ S? ~ ("[" ~ intSubset ~ "]" ~ S?)? ~ ">" }
+
+// [28a](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-declsep)
+// `DeclSep   ::=   PEReference | S`
+
+DeclSep = { PEReference | S }
+
+// [28b](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-intSubset)
+// `intSubset   ::=   (markupdecl | DeclSep)*`
+
+intSubset = { (markupdecl | DeclSep)* }
+
+// [29](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-markupdecl)
+// `markupdecl   ::=   elementdecl | AttlistDecl | EntityDecl | NotationDecl | PI | Comment`
+
+markupdecl = { elementdecl | AttlistDecl | EntityDecl | NotationDecl | PI | Comment }
+
+// # External Subset
+// [30](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-extSubset)
+// `extSubset   ::=   TextDecl? extSubsetDecl`
+
+extSubset = { TextDecl? ~ extSubsetDecl }
+
+// [31](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-extSubsetDecl)
+// `extSubsetDecl   ::=   ( markupdecl | conditionalSect | DeclSep)*`
+
+extSubsetDecl = { ( markupdecl | conditionalSect | DeclSep )* }
+
+// # Standalone Document Declaration
+// [32](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-SDDecl)
+// `SDDecl   ::=   S 'standalone' Eq (("'" ('yes' | 'no') "'") | ('"' ('yes' | 'no') '"'))`
+
+SDDecl = { S ~ "standalone" ~ Eq ~ (("'" ~ ("yes" | "no") ~ "'") | ("\"" ~ ("yes" | "no") ~ "\"")) }
+
+// # Element
+// [39](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-element)
+// `element   ::=   EmptyElemTag | STag content ETag`
+
+element = { EmptyElemTag | (STag ~ content ~ ETag) }
+
+// # Start-tag
+// [40](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-STag)
+// `STag   ::=   '<' Name (S Attribute)* S? '>'`
+
+STag = { "<" ~ Name ~ (S ~ Attribute)* ~ S? ~ ">" }
+
+// [41](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-Attribute)
+// `Attribute   ::=   Name Eq AttValue`
+
+Attribute = { Name ~ Eq ~ AttValue }
+
+// # End-tag
+// [42](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-ETag)
+// `ETag   ::=   '</' Name S? '>'`
+
+ETag = { "</" ~ Name ~ S? ~ ">" }
+
+// # Content of Elements
+// [43](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-content)
+// `content   ::=   CharData? ((element | Reference | CDSect | PI | Comment) CharData?)*`
+
+content = { CharData? ~ ((element | Reference | CDSect | PI | Comment) ~ CharData?)* }
+
+// # Tags for Empty Elements
+// [44](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-EmptyElemTag)
+// `EmptyElemTag   ::=   '<' Name (S Attribute)* S? '/>'`
+
+EmptyElemTag = { "<" ~ Name ~ (S ~ Attribute)* ~ S? ~ "/>" }
+
+// # Element Type Declaration
+// [45](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-elementdecl)
+// `elementdecl   ::=   '<!ELEMENT' S Name S contentspec S? '>'`
+
+elementdecl = { "<!ELEMENT" ~ S ~ Name ~ S ~ contentspec ~ S? ~ ">" }
+
+// [46](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-contentspec)
+// `contentspec   ::=   'EMPTY' | 'ANY' | Mixed | children`
+
+contentspec = { "EMPTY" | "ANY" | Mixed | children }
+
+// # Element-content Models
+// [47](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-children)
+// `children   ::=   (choice | seq) ('?' | '*' | '+')?`
+
+children = { (choice | seq) ~ ("?" | "*" | "+")? }
+
+// [48](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-cp)
+// `cp   ::=   (Name | choice | seq) ('?' | '*' | '+')?`
+
+cp = { (Name | choice | seq) ~ ("?" | "*" | "+")? }
+
+// [49](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-choice)
+// `choice   ::=   '(' S? cp ( S? '|' S? cp )+ S? ')'`
+
+choice = { "(" ~ S? ~ cp ~ ( S? ~ "|" ~ S? ~ cp)+ ~ S? ~ ")" }
+
+// [50](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-seq)
+// `seq   ::=   '(' S? cp ( S? ',' S? cp )* S? ')'`
+
+seq = { "(" ~ S? ~ cp ~ ( S? ~ "," ~ S? ~ cp )* ~ S? ~ ")" }
+
+// # Mixed-content Declaration
+// [51](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-Mixed)
+// `Mixed   ::=   '(' S? '#PCDATA' (S? '|' S? Name)* S? ')*' | '(' S? '#PCDATA' S? ')'`
+
+Mixed = { ("(" ~ S? ~ "#PCDATA" ~ (S? ~ "|" ~ S? ~ Name)* ~ S? ~ ")*") | ("(" ~ S? ~ "#PCDATA" ~ S? ~ ")") }
+
+
+
+// ****************************************TODO**********************************
+// Empty definition just to make things compile for now
+AttlistDecl = { "E" }
+conditionalSect = { "E" }
+EncodingDecl = { "E" }
+EntityDecl = { "E" }
+ExternalID = { "E" }
+NotationDecl = { "E" }
+PEReference = { "E" }
+Reference = { "E" }
+TextDecl = { "E" }
+

@@ -1,0 +1,8 @@
+[package]
+name = "xml-grimoire"
+version = "0.1.0"
+authors = ["Will Page <compenguy@gmail.com>"]
+
+[dependencies]
+pest = "2.0"
+pest_derive = "2.0"
