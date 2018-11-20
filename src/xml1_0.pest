@@ -2,6 +2,9 @@
 // ## Reference: https://www.w3.org/TR/2008/REC-xml-20081126/
 // ### Last updated: 2013-02-07
 // ## Latest version: https://www.w3.org/TR/xml/
+// For a description of how to interpret the XML specification's
+// particular flavor of EBNF, see
+// https://www.w3.org/TR/REC-xml/#sec-notation
 
 // # Document
 // [1](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-document)
