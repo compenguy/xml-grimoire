@@ -324,17 +324,175 @@ seq = { "(" ~ S? ~ cp ~ ( S? ~ "," ~ S? ~ cp )* ~ S? ~ ")" }
 
 Mixed = { ("(" ~ S? ~ "#PCDATA" ~ (S? ~ "|" ~ S? ~ Name)* ~ S? ~ ")*") | ("(" ~ S? ~ "#PCDATA" ~ S? ~ ")") }
 
+//# Attribute-list Declaration
+// [52](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-AttlistDecl)
+// `AttlistDecl   ::=   '<!ATTLIST' S Name AttDef* S? '>'`
 
+AttlistDecl = { "<!ATTLIST" ~ S ~ Name ~ AttDef* ~ S? ~ ">" }
 
-// ****************************************TODO**********************************
-// Empty definition just to make things compile for now
-AttlistDecl = { "E" }
-conditionalSect = { "E" }
-EncodingDecl = { "E" }
-EntityDecl = { "E" }
-ExternalID = { "E" }
-NotationDecl = { "E" }
-PEReference = { "E" }
-Reference = { "E" }
-TextDecl = { "E" }
+// [53](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-AttDef)
+// `AttDef   ::=   S Name S AttType S DefaultDecl`
 
+AttDef = { S ~ Name ~ S ~ AttType ~ S ~ DefaultDecl }
+
+// # Attribute Types
+// [54](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-AttType)
+// `AttType   ::=   StringType | TokenizedType | EnumeratedType`
+
+AttType = { StringType | TokenizedType | EnumeratedType }
+
+// [55](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-StringType)
+// `StringType   ::=   'CDATA'`
+
+StringType = { "CDATA" }
+
+// [56](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-TokenizedType)
+// `TokenizedType   ::=   'ID' | 'IDREF' | 'IDREFS' |
+//                       'ENTITY' | 'ENTITIES' |
+//                       'NMTOKEN' | 'NMTOKENS'`
+
+TokenizedType = { "ID" | "IDREF" | "IDREFS" | "ENTITY" | "ENTITIES" |
+                  "NMTOKEN" | "NMTOKENS" }
+
+// # Enumerated Attribute Types
+// [57](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-EnumeratedType)
+// `EnumeratedType   ::=   NotationType | Enumeration`
+
+EnumeratedType = { NotationType | Enumeration }
+
+// [58](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-NotationType)
+// `NotationType   ::=   'NOTATION' S '(' S? Name (S? '|' S? Name)* S? ')'`
+
+NotationType = { "NOTATION" ~ S ~ "(" ~ S? ~ Name ~ (S? ~ "|" ~ S? ~ Name)* ~ S? ~ ")" }
+
+// [59](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-Enumeration)
+// `Enumeration   ::=   '(' S? Nmtoken (S? '|' S? Nmtoken)* S? ')'`
+
+Enumeration = { "(" ~ S? ~ Nmtoken ~ (S? ~ "|" ~ S? ~ Nmtoken)* ~ S? ~ ")" }
+
+// # Attribute Defaults
+// [60](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-DefaultDecl)
+// `DefaultDecl   ::=   '#REQUIRED' | '#IMPLIED' | (('#FIXED' S)? AttValue)`
+
+DefaultDecl = { "#REQUIRED" | "#IMPLIED" | (("#FIXED" ~ S)? ~ AttValue) }
+
+// # Conditional Section
+// [61](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-conditionalSect)
+// `conditionalSect   ::=   includeSect | ignoreSect`
+
+conditionalSect = { includeSect | ignoreSect }
+
+// [62](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-includeSectc)
+// `includeSect   ::=   '<![' S? 'INCLUDE' S? '[' extSubsetDecl ']]>'`
+
+includeSect = { "<![" ~ S? ~ "INCLUDE" ~ S? ~ "[" ~ extSubsetDecl ~ "]]>" }
+
+// [63](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-ignoreSect)
+// `ignoreSect   ::=   '<![' S? 'IGNORE' S? '[' ignoreSectContents* ']]>'`
+
+ignoreSect = { "<![" ~ S? ~ "IGNORE" ~ S? ~ "[" ~ ignoreSectContents* ~ "]]>" }
+
+// [64](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-ignoreSectContents)
+// `ignoreSectContents   ::=   Ignore ('<![' ignoreSectContents ']]>' Ignore)*`
+
+ignoreSectContents = { Ignore ~ ("<![" ~ ignoreSectContents ~ "]]>" ~ Ignore)* }
+
+// [65](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-Ignore)
+// `Ignore   ::=   Char* - (Char* ('<![' | ']]>') Char*)`
+
+// Pest expresses A - B syntax instead as !B ~ A
+Ignore = { !(Char* ~ ("<![" | "]]>") ~ Char*) ~ Char* }
+
+// # Character Reference
+// [66](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-CharRef)
+// `CharRef   ::=   '&#' [0-9]+ ';' | '&#x' [0-9a-fA-F]+ ';'`
+
+CharRef = { ("&#" ~ '0'..'9'+ ~ ";") | ("&#x" ~ ('0'..'9' | 'a'..'f' | 'A'..'F')+ ~ ";") }
+
+// # Entity Reference
+// [67](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-Reference)
+// `Reference   ::=   EntityRef | CharRef`
+
+Reference = { EntityRef | CharRef }
+
+// [68](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-EntityRef)
+// `EntityRef   ::=   '&' Name ';'`
+
+EntityRef = { "&" ~ Name ~ ";" }
+
+// [69](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-PEReference)
+// `PEReference   ::=   '%' Name ';'`
+
+PEReference = { "%" ~ Name ~ ";" }
+
+// # Entity Declaration
+// [70](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-EntityDecl)
+// `EntityDecl   ::=   GEDecl | PEDecl`
+
+EntityDecl = { GEDecl | PEDecl }
+
+// [71](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-GEDecl)
+// `GEDecl   ::=   '<!ENTITY' S Name S EntityDef S? '>'`
+
+GEDecl = { "<!ENTITY" ~ S ~ Name ~ S ~ EntityDef ~ S? ~ ">" }
+
+// [72](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-PEDecl)
+// `PEDecl   ::=   '<!ENTITY' S '%' S Name S PEDef S? '>'`
+
+PEDecl = { "<!ENTITY" ~ S ~ "%" ~ S ~ Name ~ S ~ PEDef ~ S? ~ ">" }
+
+// [73](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-EntityDef)
+// `EntityDef   ::=   EntityValue | (ExternalID NDataDecl?)`
+
+EntityDef = { EntityValue | (ExternalID ~ NDataDecl?) }
+
+// [74](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-PEDef)
+// `PEDef   ::=   EntityValue | ExternalID`
+
+PEDef = { EntityValue | ExternalID }
+
+// # External Entity Declaration
+// [75](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-ExternalID)
+// `ExternalID   ::=   'SYSTEM' S SystemLiteral | 'PUBLIC' S PubidLiteral S SystemLiteral`
+
+ExternalID = { ("SYSTEM" ~ S ~ SystemLiteral) | ("PUBLIC" ~ S ~ PubidLiteral ~ S ~ SystemLiteral) }
+
+// [76](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-NDataDecl)
+// `NDataDecl   ::=   S 'NDATA' S Name`
+
+NDataDecl = { S ~ "NDATA" ~ S ~ Name }
+
+// # Text Declaration
+// [77](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-TextDecl)
+// `TextDecl   ::=   '<?xml' VersionInfo? EncodingDecl S? '?>'`
+
+TextDecl = { "<?xml" ~ VersionInfo? ~ EncodingDecl ~ S? ~ "?>" }
+
+// # Well-Formed External Parsed Entity
+// [78](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-ExtParsedEnt)
+// `extParsedEnt   ::=   TextDecl? content`
+
+extParsedEnt = { TextDecl? ~ content }
+
+// # Encoding Declaration
+// [80](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-EncodingDecl)
+// `EncodingDecl   ::=   S 'encoding' Eq ('"' EncName '"' | "'" EncName "'" )`
+
+EncodingDecl = { S ~ "encoding" ~ Eq ~ ( ("\"" ~ EncName ~ "\"") | ("'" ~ EncName ~ "'" ) ) }
+
+// [81](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-EncName)
+// `EncName   ::=   [A-Za-z] ([A-Za-z0-9._] | '-')*`
+// * Encoding name contains only Latin characters
+
+EncName = { ('A'..'Z' | 'a'..'z') ~ ('A'..'Z' | 'a'..'z' | '0'..'9' | "." | "_" | "-")* }
+
+// # Notation Declarations
+// [82](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-NotationDecl)
+// `NotationDecl   ::=   '<!NOTATION' S Name S (ExternalID | PublicID) S? '>'`
+
+NotationDecl = { "<!NOTATION" ~ S ~ Name ~ S ~ (ExternalID | PublicID) ~ S? ~ ">" }
+
+// [83](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-PublicID)
+// `PublicID   ::=   'PUBLIC' S PubidLiteral`
+
+PublicID = { "PUBLIC" ~ S ~ PubidLiteral }
