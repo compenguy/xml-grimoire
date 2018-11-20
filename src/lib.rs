@@ -8,17 +8,25 @@ pub struct XmlParser1_0;
 
 #[cfg(test)]
 mod tests {
+    use super::*;
+    use pest::Parser;
+
     #[test]
-    fn simple_docs() {
-        assert!(XmlParser1_0::parse(Rule::doc, r#""#).is_err());
-        assert!(
-            XmlParser1_0::parse(Rule::doc, r#"<?xml version="1.0" encoding="utf-8"?>"#).is_err()
-        );
-        assert!(
-            XmlParser1_0::parse(
-                Rule::doc,
-                r#"<?xml version="1.0" encoding="utf-8"?>\n<root/>"#
-            ).is_ok()
-        );
+    fn test_document() {
+        let rule = Rule::document;
+
+        let mut content = r#""#;
+        let mut parsed = XmlParser1_0::parse(rule, content);
+        assert_eq!(parsed.is_ok(), false);
+
+        content = r#"<?xml version="1.0" encoding="utf-8"?>"#;
+        parsed = XmlParser1_0::parse(rule, content);
+        assert_eq!(parsed.is_ok(), false);
+
+        content = r#"<?xml version="1.0" encoding="utf-8"?>
+<root>
+</root>"#;
+        parsed = XmlParser1_0::parse(rule, content);
+        assert_eq!(parsed.is_ok(), true);
     }
 }
