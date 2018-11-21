@@ -59,7 +59,7 @@ S = _{ "\u{0020}" | "\u{0009}" | "\u{000D}" | "\u{000A}" }
 // [4](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-NameStartChar)
 // `NameStartChar   ::=   ":" | [A-Z] | "_" | [a-z] | [#xC0-#xD6] | [#xD8-#xF6] | [#xF8-#x2FF] | [#x370-#x37D] | [#x37F-#x1FFF] | [#x200C-#x200D] | [#x2070-#x218F] | [#x2C00-#x2FEF] | [#x3001-#xD7FF] | [#xF900-#xFDCF] | [#xFDF0-#xFFFD] | [#x10000-#xEFFFF]`
 
-NameStartChar = { ":" | 'A'..'Z' | "_" | 'a'..'z' | '\u{00C0}'..'\u{00D6}' |
+NameStartChar = _{ ":" | 'A'..'Z' | "_" | 'a'..'z' | '\u{00C0}'..'\u{00D6}' |
                   '\u{00D8}'..'\u{00F6}' | '\u{00F8}'..'\u{02FF}' |
                   '\u{0370}'..'\u{037D}' | '\u{037F}'..'\u{1FFF}' |
                   '\u{200C}'..'\u{200D}' | '\u{2070}'..'\u{218F}' |
@@ -147,9 +147,8 @@ Comment = { "<!--" ~ ( (!"-" ~ Char) | ("-" ~ (!"-" ~ Char)))* ~ "-->" }
 // [16](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-PI)
 // `PI   ::=   '<?' PITarget (S (Char* - (Char* '?>' Char*)))? '?>'`
 
-// TODO: PI not properly matching
 // non-standard helper production to express (Char* - (Char* '?>' Char*))
-_pi_data = { !(Char* ~ "?>" ~ Char*) ~ Char* }
+_pi_data = _{ !(Char* ~ "?>" ~ Char*) ~ Char* }
 // Pest expresses A - B syntax instead as !B ~ A
 PI = { "<?" ~ PITarget ~ (S ~ (_pi_data))? ~ "?>" }
 
@@ -163,7 +162,6 @@ PITarget = { !( ("X" | "x") ~ ("M" | "m") ~ ("L" | "l") ) ~ Name }
 // [18](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-CDSect)
 // `CDSect   ::=   CDStart CData CDEnd`
 
-//TODO: Figure out why this doesn't parse either
 CDSect = { CDStart ~ CData ~ CDEnd }
 
 // [19](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-CDStart)
@@ -261,7 +259,8 @@ element = { EmptyElemTag | (STag ~ content ~ ETag) }
 // [40](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-STag)
 // `STag   ::=   '<' Name (S Attribute)* S? '>'`
 
-STag = { "<" ~ Name ~ (S ~ Attribute)* ~ S? ~ ">" }
+// NOTE: Deviation from documented schema: (S Attribute) -> (S+ Attribute)
+STag = { "<" ~ Name ~ (S+ ~ Attribute)* ~ S? ~ ">" }
 
 // [41](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-Attribute)
 // `Attribute   ::=   Name Eq AttValue`
