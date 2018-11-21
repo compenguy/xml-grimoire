@@ -1,0 +1,14 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+
+<!-- planes.xsd.xml
+     A simple XML document for illustrating a schema
+     The schema is in planes.xsd
+     -->
+<planes
+  xmlns = "http://cs.uccs.edu/planeSchema"
+  xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation = "http://cs.uccs.edu/planeSchema/planes.xsd">
+    <make> Cessna </make>
+    <make> Piper </make>
+    <make> Beechcraft </make>
+</planes>
