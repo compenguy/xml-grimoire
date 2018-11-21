@@ -283,13 +283,15 @@ content = { CharData? ~ ((element | Reference | CDSect | PI | Comment) ~ CharDat
 // [44](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-EmptyElemTag)
 // `EmptyElemTag   ::=   '<' Name (S Attribute)* S? '/>'`
 
-EmptyElemTag = { "<" ~ Name ~ (S ~ Attribute)* ~ S? ~ "/>" }
+// NOTE: Deviation from documented schema: (S Attribute) -> (S+ Attribute)
+EmptyElemTag = { "<" ~ Name ~ (S+ ~ Attribute)* ~ S? ~ "/>" }
 
 // # Element Type Declaration
 // [45](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-elementdecl)
 // `elementdecl   ::=   '<!ELEMENT' S Name S contentspec S? '>'`
 
-elementdecl = { "<!ELEMENT" ~ S ~ Name ~ S ~ contentspec ~ S? ~ ">" }
+// NOTE: Deviation from documented schema: S Name S -> S+ Name S+
+elementdecl = { "<!ELEMENT" ~ S+ ~ Name ~ S+ ~ contentspec ~ S? ~ ">" }
 
 // [46](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-contentspec)
 // `contentspec   ::=   'EMPTY' | 'ANY' | Mixed | children`
