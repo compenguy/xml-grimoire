@@ -4,4 +4,5 @@ extern crate pest_derive;
 
 mod lexer;
 mod lexer_xmltest_not_wf;
-// mod token;
+mod lexer_xmltest_valid;
+// mode lexer_xmltest_wf_invalid;
