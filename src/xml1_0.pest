@@ -10,7 +10,10 @@
 // [1](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-document)
 // `document   ::=   prolog element Misc*`
 
-document = { prolog ~ element ~ Misc* }
+// NOTE: EOI is a pest-specific production matching the end-of-input
+// This ensures that trailing data that doesn't match Misc* gets
+// treated as an error rather than being ignored.
+document = { SOI ~ prolog ~ element ~ Misc* ~ EOI }
 
 // # Character Range
 // [2](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-Char)
