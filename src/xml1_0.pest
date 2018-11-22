@@ -5,6 +5,17 @@
 // For a description of how to interpret the XML specification's
 // particular flavor of EBNF, see
 // https://www.w3.org/TR/REC-xml/#sec-notation
+//
+// # Known Lexing Gaps
+// 1. Under some circumstances, when processing an entity (%foo; and &foo;)
+// it's required to re-lex starting at the beginning of the entity
+// but using the entity's value instead of its original text.
+//
+// 2. The lexer has no capacity to resolve external document requests for
+// processing external DTDs.
+//
+// 3. The lexer doesn't include the required predefined entities:
+// &quote;, &amp;, &apos;, &lt;, and &gt;
 
 // # Document
 // [1](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-document)

@@ -1,4 +1,3 @@
-
 #[derive(Parser)]
 #[grammar = "xml1_0.pest"]
 pub struct XmlLexer1_0;
@@ -83,7 +82,8 @@ mod tests {
     fn test_document_invalid_missing_root() {
         let rule = Rule::document;
         let content = r#"<?xml version="1.0" encoding="utf-8"?>"#;
-        let _parsed = XmlLexer1_0::parse(rule, content).expect("Document missing a root element is not valid.");
+        let _parsed = XmlLexer1_0::parse(rule, content)
+            .expect("Document missing a root element is not valid.");
     }
 
 }
