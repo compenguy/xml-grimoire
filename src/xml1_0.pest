@@ -172,8 +172,8 @@ CDStart = { "<![CDATA[" }
 // [20](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-CData)
 // `CData   ::=   (Char* - (Char* ']]>' Char*))`
 
-// Pest expresses A - B syntax instead as !B ~ A
-CData = { !(Char * ~ CDEnd ~ Char *) ~ Char* }
+// NOTE: Custom rewrite of EBNF production
+CData = { (!CDEnd ~ Char)* }
 
 // [21](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-CDEnd)
 // `CDEnd   ::=   ']]>'`
