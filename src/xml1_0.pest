@@ -21,10 +21,13 @@
 // [1](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-document)
 // `document   ::=   prolog element Misc*`
 
+// Detect and suppress BOM, if present
+BOM = _{ "\u{FEFF}" }
+
 // NOTE: EOI is a pest-specific production matching the end-of-input
 // This ensures that trailing data that doesn't match Misc* gets
 // treated as an error rather than being ignored.
-document = { SOI ~ prolog ~ element ~ Misc* ~ EOI }
+document = { SOI ~ BOM? ~ prolog ~ element ~ Misc* ~ EOI }
 
 // # Character Range
 // [2](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-Char)
@@ -129,8 +132,8 @@ SystemLiteral = { ("\"" ~ (!"\"" ~ Char)* ~ "\"") |
 // [12](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-PubidLiteral)
 // `PubidLiteral   ::=   '"' PubidChar* '"' | "'" (PubidChar - "'")* "'"`
 
-PubidLiteral = { ("\"" ~ PubidChar* ~ "\"") |
-                 ("'" ~ PubidChar* ~ "'") }
+PubidLiteral = { ("\"" ~ (!"\"" ~ PubidChar)* ~ "\"") |
+                 ("'" ~ (!"'" ~ PubidChar)* ~ "'") }
 
 // [13](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-PubidChar)
 // `PubidChar   ::=   #x20 | #xD | #xA | [a-zA-Z0-9] | [-'()+,./:=?;!*#@$_%]`

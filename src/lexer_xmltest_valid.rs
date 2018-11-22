@@ -18,6 +18,20 @@ mod tests {
         };
     }
 
+    // Inspired by:
+    // https://medium.com/@forensic_matt/learning-rust-pt-4-binary-data-datetimes-and-utf-16-4d65f0aad06#d303
+    fn get_utf16_bytes_as_utf8(bytes: &[u8]) -> String {
+        // Convert u8 buffer to u16 buffer
+        let utf16_buf: &[u16] = unsafe {
+            std::slice::from_raw_parts(
+                bytes.as_ptr() as *const u16,
+                bytes.len() / 2,
+            )
+        };
+
+        String::from_utf16(utf16_buf).expect("Input couldn't be parsed as valid utf16")
+    }
+
     // <!-- Start:  valid/sa -->
     #[test]
     fn conformance_valid_sa_001() {
@@ -509,9 +523,7 @@ mod tests {
     #[test]
     fn conformance_valid_sa_049() {
         let id = "valid-sa-049";
-        let content = unsafe {
-            std::str::from_utf8_unchecked(include_bytes!("../tests/xmltest/valid/sa/049.xml"))
-        };
+        let content = &get_utf16_bytes_as_utf8(include_bytes!("../tests/xmltest/valid/sa/049.xml"));
         let section = "2.2 [2]";
         let _output = include_str!("../tests/xmltest/valid/sa/out/049.xml");
         let desc = "Test demonstrates that characters outside of normal ascii range can be used as element content.";
@@ -521,9 +533,7 @@ mod tests {
     #[test]
     fn conformance_valid_sa_050() {
         let id = "valid-sa-050";
-        let content = unsafe {
-            std::str::from_utf8_unchecked(include_bytes!("../tests/xmltest/valid/sa/050.xml"))
-        };
+        let content = &get_utf16_bytes_as_utf8(include_bytes!("../tests/xmltest/valid/sa/050.xml"));
         let section = "2.2 [2]";
         let _output = include_str!("../tests/xmltest/valid/sa/out/050.xml");
         let desc = "Test demonstrates that characters outside of normal ascii range can be used as element content.";
@@ -533,9 +543,7 @@ mod tests {
     #[test]
     fn conformance_valid_sa_051() {
         let id = "valid-sa-051";
-        let content = unsafe {
-            std::str::from_utf8_unchecked(include_bytes!("../tests/xmltest/valid/sa/051.xml"))
-        };
+        let content = &get_utf16_bytes_as_utf8(include_bytes!("../tests/xmltest/valid/sa/051.xml"));
         let section = "2.2 [2]";
         let _output = include_str!("../tests/xmltest/valid/sa/out/051.xml");
         let desc = "The document is encoded in UTF-16 and uses some name characters well outside of the normal ASCII range.";
