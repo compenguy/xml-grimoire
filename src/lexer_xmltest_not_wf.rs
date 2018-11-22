@@ -188,283 +188,589 @@ mod tests {
         let desc = "CDATA sections need a terminating ']]&gt;'.";
         conformance_not_wf(id, section, desc, content);
     }
-}
 
-/*
+    #[test]
+    #[should_panic]
+    fn conformance_not_wf_sa_018() {
         let id = "not-wf-sa-018";
         let content = include_str!("../tests/xmltest/not-wf/sa/018.xml");
         let section = "section 2.7 [19]";
-        CDATA sections begin with a literal '&lt;![CDATA[', no space.
+        let desc = "CDATA sections begin with a literal '&lt;![CDATA[', no space.";
+        conformance_not_wf(id, section, desc, content);
+    }
+
+    #[test]
+    #[should_panic]
+    fn conformance_not_wf_sa_019() {
 
         let id = "not-wf-sa-019";
         let content = include_str!("../tests/xmltest/not-wf/sa/019.xml");
         let section = "section 3.1 [42]";
-        End tags may not be abbreviated as '&lt;/&gt;'.
+        let desc = "End tags may not be abbreviated as '&lt;/&gt;'.";
+        conformance_not_wf(id, section, desc, content);
+    }
+
+    #[test]
+    #[should_panic]
+    fn conformance_not_wf_sa_020() {
 
         let id = "not-wf-sa-020";
         let content = include_str!("../tests/xmltest/not-wf/sa/020.xml");
         let section = "section 2.3 [10]";
-        Attribute values may not contain literal '&amp;'
-        characters except as part of an entity reference.
+        let desc = "Attribute values may not contain literal '&amp;' characters except as part of an entity reference.";
+        conformance_not_wf(id, section, desc, content);
+    }
+
+    #[test]
+    #[should_panic]
+    fn conformance_not_wf_sa_021() {
 
         let id = "not-wf-sa-021";
         let content = include_str!("../tests/xmltest/not-wf/sa/021.xml");
         let section = "section 2.3 [10]";
-        Attribute values may not contain literal '&amp;'
-        characters except as part of an entity reference.
+        let desc = "Attribute values may not contain literal '&amp;' characters except as part of an entity reference.";
+        conformance_not_wf(id, section, desc, content);
+    }
+
+    #[test]
+    #[should_panic]
+    fn conformance_not_wf_sa_022() {
 
         let id = "not-wf-sa-022";
         let content = include_str!("../tests/xmltest/not-wf/sa/022.xml");
         let section = "section 4.1 [66]";
-        Character references end with semicolons, always!
+        let desc = "Character references end with semicolons, always!";
+        conformance_not_wf(id, section, desc, content);
+    }
+
+    #[test]
+    #[should_panic]
+    fn conformance_not_wf_sa_023() {
 
         let id = "not-wf-sa-023";
         let content = include_str!("../tests/xmltest/not-wf/sa/023.xml");
         let section = "section 2.3 [5]";
-        Digits are not valid name start characters.
+        let desc = "Digits are not valid name start characters.";
+        conformance_not_wf(id, section, desc, content);
+    }
+
+    #[test]
+    #[should_panic]
+    fn conformance_not_wf_sa_024() {
 
         let id = "not-wf-sa-024";
         let content = include_str!("../tests/xmltest/not-wf/sa/024.xml");
         let section = "section 2.3 [5]";
-        Digits are not valid name start characters.
+        let desc = "Digits are not valid name start characters.";
+        conformance_not_wf(id, section, desc, content);
+    }
+
+    #[test]
+    #[should_panic]
+    fn conformance_not_wf_sa_025() {
 
         let id = "not-wf-sa-025";
         let content = include_str!("../tests/xmltest/not-wf/sa/025.xml");
         let section = "section 2.4 [14]";
-        Text may not contain a literal ']]&gt;' sequence.
+        let desc = "Text may not contain a literal ']]&gt;' sequence.";
+        conformance_not_wf(id, section, desc, content);
+    }
+
+    #[test]
+    #[should_panic]
+    fn conformance_not_wf_sa_026() {
 
         let id = "not-wf-sa-026";
         let content = include_str!("../tests/xmltest/not-wf/sa/026.xml");
         let section = "section 2.4 [14]";
-        Text may not contain a literal ']]&gt;' sequence.
+        let desc = "Text may not contain a literal ']]&gt;' sequence.";
+        conformance_not_wf(id, section, desc, content);
+    }
+
+    #[test]
+    #[should_panic]
+    fn conformance_not_wf_sa_027() {
 
         let id = "not-wf-sa-027";
         let content = include_str!("../tests/xmltest/not-wf/sa/027.xml");
         let section = "section 2.5 [15]";
-        Comments must be terminated with "--&gt;".
+        let desc = "Comments must be terminated with '--&gt;'.";
+        conformance_not_wf(id, section, desc, content);
+    }
+
+    #[test]
+    #[should_panic]
+    fn conformance_not_wf_sa_028() {
 
         let id = "not-wf-sa-028";
         let content = include_str!("../tests/xmltest/not-wf/sa/028.xml");
         let section = "section 2.6 [16]";
-        Processing instructions must end with '?&gt;'.
+        let desc = "Processing instructions must end with '?&gt;'.";
+        conformance_not_wf(id, section, desc, content);
+    }
+
+    #[test]
+    #[should_panic]
+    fn conformance_not_wf_sa_029() {
 
         let id = "not-wf-sa-029";
         let content = include_str!("../tests/xmltest/not-wf/sa/029.xml");
         let section = "section 2.4 [14]";
-        Text may not contain a literal ']]&gt;' sequence.
+        let desc = "Text may not contain a literal ']]&gt;' sequence.";
+        conformance_not_wf(id, section, desc, content);
+    }
+
+    #[test]
+    #[should_panic]
+    fn conformance_not_wf_sa_030() {
 
         let id = "not-wf-sa-030";
         let content = include_str!("../tests/xmltest/not-wf/sa/030.xml");
         let section = "section 2.2 [2]";
-        A form feed is not a legal XML character.
+        let desc = "A form feed is not a legal XML character.";
+        conformance_not_wf(id, section, desc, content);
+    }
+
+    #[test]
+    #[should_panic]
+    fn conformance_not_wf_sa_031() {
 
         let id = "not-wf-sa-031";
         let content = include_str!("../tests/xmltest/not-wf/sa/031.xml");
         let section = "section 2.2 [2]";
-        A form feed is not a legal XML character.
+        let desc = "A form feed is not a legal XML character.";
+        conformance_not_wf(id, section, desc, content);
+    }
+
+    #[test]
+    #[should_panic]
+    fn conformance_not_wf_sa_032() {
 
         let id = "not-wf-sa-032";
         let content = include_str!("../tests/xmltest/not-wf/sa/032.xml");
         let section = "section 2.2 [2]";
-        A form feed is not a legal XML character.
+        let desc = "A form feed is not a legal XML character.";
+        conformance_not_wf(id, section, desc, content);
+    }
+
+    #[test]
+    #[should_panic]
+    fn conformance_not_wf_sa_033() {
 
         let id = "not-wf-sa-033";
         let content = include_str!("../tests/xmltest/not-wf/sa/033.xml");
         let section = "section 2.2 [2]";
-        An ESC (octal 033) is not a legal XML character.
+        let desc = "An ESC (octal 033) is not a legal XML character.";
+        conformance_not_wf(id, section, desc, content);
+    }
+
+    #[test]
+    #[should_panic]
+    fn conformance_not_wf_sa_034() {
 
         let id = "not-wf-sa-034";
         let content = include_str!("../tests/xmltest/not-wf/sa/034.xml");
         let section = "section 2.2 [2]";
-        A form feed is not a legal XML character.
+        let desc = "A form feed is not a legal XML character.";
+        conformance_not_wf(id, section, desc, content);
+    }
+
+    #[test]
+    #[should_panic]
+    fn conformance_not_wf_sa_035() {
 
         let id = "not-wf-sa-035";
         let content = include_str!("../tests/xmltest/not-wf/sa/035.xml");
         let section = "section 3.1 [43]";
-        The '&lt;' character is a markup delimiter and must
-        start an element, CDATA section, PI, or comment.
+        let desc = "The '&lt;' character is a markup delimiter and must start an element, CDATA section, PI, or comment.";
+        conformance_not_wf(id, section, desc, content);
+    }
+
+    #[test]
+    #[should_panic]
+    fn conformance_not_wf_sa_036() {
 
         let id = "not-wf-sa-036";
         let content = include_str!("../tests/xmltest/not-wf/sa/036.xml");
         let section = "section 2.8 [27]";
-        Text may not appear after the root element.
+        let desc = "Text may not appear after the root element.";
+        conformance_not_wf(id, section, desc, content);
+    }
+
+    #[test]
+    #[should_panic]
+    fn conformance_not_wf_sa_037() {
 
         let id = "not-wf-sa-037";
         let content = include_str!("../tests/xmltest/not-wf/sa/037.xml");
         let section = "section 2.8 [27]";
-        Character references may not appear after the root element.
+        let desc = "Character references may not appear after the root element.";
+        conformance_not_wf(id, section, desc, content);
+    }
+
+    #[test]
+    #[should_panic]
+    fn conformance_not_wf_sa_038() {
 
         let id = "not-wf-sa-038";
         let content = include_str!("../tests/xmltest/not-wf/sa/038.xml");
         let section = "section 3.1";
-        Tests the "Unique Att Spec" WF constraint by providing
-        multiple values for an attribute.
+        let desc = "Tests the 'Unique Att Spec' WF constraint by providing multiple values for an attribute.";
+        conformance_not_wf(id, section, desc, content);
+    }
+
+    #[test]
+    #[should_panic]
+    fn conformance_not_wf_sa_039() {
 
         let id = "not-wf-sa-039";
-        let content = include_str!("../tests/xmltest/not-wf/sa/039.xml");3"
-        Tests the Element Type Match WFC - end tag name must
-        match start tag name.
+        let content = include_str!("../tests/xmltest/not-wf/sa/039.xml");
+        let section = "3";
+        let desc = "Tests the Element Type Match WFC - end tag name must match start tag name.";
+        conformance_not_wf(id, section, desc, content);
+    }
+
+    #[test]
+    #[should_panic]
+    fn conformance_not_wf_sa_040() {
 
         let id = "not-wf-sa-040";
         let content = include_str!("../tests/xmltest/not-wf/sa/040.xml");
         let section = "section 2.8 [27]";
-        Provides two document elements.
+        let desc = "Provides two document elements.";
+        conformance_not_wf(id, section, desc, content);
+    }
+
+    #[test]
+    #[should_panic]
+    fn conformance_not_wf_sa_041() {
 
         let id = "not-wf-sa-041";
         let content = include_str!("../tests/xmltest/not-wf/sa/041.xml");
         let section = "section 2.8 [27]";
-        Provides two document elements.
+        let desc = "Provides two document elements.";
+        conformance_not_wf(id, section, desc, content);
+    }
+
+    #[test]
+    #[should_panic]
+    fn conformance_not_wf_sa_042() {
 
         let id = "not-wf-sa-042";
         let content = include_str!("../tests/xmltest/not-wf/sa/042.xml");
         let section = "section 3.1 [42]";
-         Invalid End Tag
+        let desc = "Invalid End Tag";
+        conformance_not_wf(id, section, desc, content);
+    }
+
+    #[test]
+    #[should_panic]
+    fn conformance_not_wf_sa_043() {
 
         let id = "not-wf-sa-043";
         let content = include_str!("../tests/xmltest/not-wf/sa/043.xml");
         let section = "section 2.8 [27]";
-        Provides #PCDATA text after the document element.
+        let desc = "Provides #PCDATA text after the document element.";
+        conformance_not_wf(id, section, desc, content);
+    }
+
+    #[test]
+    #[should_panic]
+    fn conformance_not_wf_sa_044() {
 
         let id = "not-wf-sa-044";
         let content = include_str!("../tests/xmltest/not-wf/sa/044.xml");
         let section = "section 2.8 [27]";
-        Provides two document elements.
+        let desc = "Provides two document elements.";
+        conformance_not_wf(id, section, desc, content);
+    }
+
+    #[test]
+    #[should_panic]
+    fn conformance_not_wf_sa_045() {
 
         let id = "not-wf-sa-045";
         let content = include_str!("../tests/xmltest/not-wf/sa/045.xml");
         let section = "section 3.1 [44]";
-        Invalid Empty Element Tag
+        let desc = "Invalid Empty Element Tag";
+        conformance_not_wf(id, section, desc, content);
+    }
+
+    #[test]
+    #[should_panic]
+    fn conformance_not_wf_sa_046() {
 
         let id = "not-wf-sa-046";
         let content = include_str!("../tests/xmltest/not-wf/sa/046.xml");
         let section = "section 3.1 [40]";
-        This start (or empty element) tag was not terminated correctly.
+        let desc = "This start (or empty element) tag was not terminated correctly.";
+        conformance_not_wf(id, section, desc, content);
+    }
+
+    #[test]
+    #[should_panic]
+    fn conformance_not_wf_sa_047() {
 
         let id = "not-wf-sa-047";
         let content = include_str!("../tests/xmltest/not-wf/sa/047.xml");
         let section = "section 3.1 [44]";
-        Invalid empty element tag invalid whitespace
+        let desc = "Invalid empty element tag invalid whitespace";
+        conformance_not_wf(id, section, desc, content);
+    }
+
+    #[test]
+    #[should_panic]
+    fn conformance_not_wf_sa_048() {
 
         let id = "not-wf-sa-048";
         let content = include_str!("../tests/xmltest/not-wf/sa/048.xml");
         let section = "section 2.8 [27]";
-        Provides a CDATA section after the roor element.
+        let desc = "Provides a CDATA section after the roor element.";
+        conformance_not_wf(id, section, desc, content);
+    }
+
+    #[test]
+    #[should_panic]
+    fn conformance_not_wf_sa_049() {
 
         let id = "not-wf-sa-049";
         let content = include_str!("../tests/xmltest/not-wf/sa/049.xml");
         let section = "section 3.1 [40]";
-        Missing start tag
+        let desc = "Missing start tag";
+        conformance_not_wf(id, section, desc, content);
+    }
+
+    #[test]
+    #[should_panic]
+    fn conformance_not_wf_sa_050() {
 
         let id = "not-wf-sa-050";
         let content = include_str!("../tests/xmltest/not-wf/sa/050.xml");
         let section = "section 2.1 [1]";
-        Empty document, with no root element.
+        let desc = "Empty document, with no root element.";
+        conformance_not_wf(id, section, desc, content);
+    }
+
+    #[test]
+    #[should_panic]
+    fn conformance_not_wf_sa_051() {
 
         let id = "not-wf-sa-051";
         let content = include_str!("../tests/xmltest/not-wf/sa/051.xml");
         let section = "section 2.7 [18]";
-         CDATA is invalid at top level of document.
+        let desc = "CDATA is invalid at top level of document.";
+        conformance_not_wf(id, section, desc, content);
+    }
+
+    #[test]
+    #[should_panic]
+    fn conformance_not_wf_sa_052() {
 
         let id = "not-wf-sa-052";
         let content = include_str!("../tests/xmltest/not-wf/sa/052.xml");
         let section = "section 4.1 [66]";
-        Invalid character reference.
+        let desc = "Invalid character reference.";
+        conformance_not_wf(id, section, desc, content);
+    }
+
+    #[test]
+    #[should_panic]
+    fn conformance_not_wf_sa_053() {
 
         let id = "not-wf-sa-053";
         let content = include_str!("../tests/xmltest/not-wf/sa/053.xml");
         let section = "section 3.1 [42]";
-        End tag does not match start tag.
+        let desc = "End tag does not match start tag.";
+        conformance_not_wf(id, section, desc, content);
+    }
+
+    #[test]
+    #[should_panic]
+    fn conformance_not_wf_sa_054() {
 
         let id = "not-wf-sa-054";
         let content = include_str!("../tests/xmltest/not-wf/sa/054.xml");
         let section = "section 4.2.2 [75]";
-        PUBLIC requires two literals.
+        let desc = "PUBLIC requires two literals.";
+        conformance_not_wf(id, section, desc, content);
+    }
+
+    #[test]
+    #[should_panic]
+    fn conformance_not_wf_sa_055() {
 
         let id = "not-wf-sa-055";
         let content = include_str!("../tests/xmltest/not-wf/sa/055.xml");
         let section = "section 2.8 [28]";
-        Invalid Document Type Definition format.
+        let desc = "Invalid Document Type Definition format.";
+        conformance_not_wf(id, section, desc, content);
+    }
+
+    #[test]
+    #[should_panic]
+    fn conformance_not_wf_sa_056() {
 
         let id = "not-wf-sa-056";
         let content = include_str!("../tests/xmltest/not-wf/sa/056.xml");
         let section = "section 2.8 [28]";
-        Invalid Document Type Definition format - misplaced comment.
+        let desc = "Invalid Document Type Definition format - misplaced comment.";
+        conformance_not_wf(id, section, desc, content);
+    }
+
+    #[test]
+    #[should_panic]
+    fn conformance_not_wf_sa_057() {
 
         let id = "not-wf-sa-057";
         let content = include_str!("../tests/xmltest/not-wf/sa/057.xml");
         let section = "section 3.2 [45]";
-        This isn't SGML; comments can't exist in declarations.
+        let desc = "This isn't SGML; comments can't exist in declarations.";
+        conformance_not_wf(id, section, desc, content);
+    }
+
+    #[test]
+    #[should_panic]
+    fn conformance_not_wf_sa_058() {
 
         let id = "not-wf-sa-058";
         let content = include_str!("../tests/xmltest/not-wf/sa/058.xml");
         let section = "section 3.3.1 [54]";
-        Invalid character , in ATTLIST enumeration
+        let desc = "Invalid character , in ATTLIST enumeration";
+        conformance_not_wf(id, section, desc, content);
+    }
+
+    #[test]
+    #[should_panic]
+    fn conformance_not_wf_sa_059() {
 
         let id = "not-wf-sa-059";
         let content = include_str!("../tests/xmltest/not-wf/sa/059.xml");
         let section = "section 3.3.1 [59]";
-        String literal must be in quotes.
+        let desc = "String literal must be in quotes.";
+        conformance_not_wf(id, section, desc, content);
+    }
+
+    #[test]
+    #[should_panic]
+    fn conformance_not_wf_sa_060() {
 
         let id = "not-wf-sa-060";
         let content = include_str!("../tests/xmltest/not-wf/sa/060.xml");
         let section = "section 3.3.1 [56]";
-        Invalid type NAME defined in ATTLIST.
+        let desc = "Invalid type NAME defined in ATTLIST.";
+        conformance_not_wf(id, section, desc, content);
+    }
+
+    #[test]
+    #[should_panic]
+    fn conformance_not_wf_sa_061() {
 
         let id = "not-wf-sa-061";
         let content = include_str!("../tests/xmltest/not-wf/sa/061.xml");
         let section = "section 4.2.2 [75]";
-        External entity declarations require whitespace between public
-        and system IDs.
+        let desc = "External entity declarations require whitespace between public and system IDs.";
+        conformance_not_wf(id, section, desc, content);
+    }
+
+    #[test]
+    #[should_panic]
+    fn conformance_not_wf_sa_062() {
 
         let id = "not-wf-sa-062";
         let content = include_str!("../tests/xmltest/not-wf/sa/062.xml");
         let section = "section 4.2 [71]";
-        Entity declarations need space after the entity name.
+        let desc = "Entity declarations need space after the entity name.";
+        conformance_not_wf(id, section, desc, content);
+    }
+
+    #[test]
+    #[should_panic]
+    fn conformance_not_wf_sa_063() {
 
         let id = "not-wf-sa-063";
         let content = include_str!("../tests/xmltest/not-wf/sa/063.xml");
         let section = "section 2.8 [29]";
-        Conditional sections may only appear in the external
-        DTD subset.
+        let desc = "Conditional sections may only appear in the external DTD subset.";
+        conformance_not_wf(id, section, desc, content);
+    }
+
+    #[test]
+    #[should_panic]
+    fn conformance_not_wf_sa_064() {
 
         let id = "not-wf-sa-064";
         let content = include_str!("../tests/xmltest/not-wf/sa/064.xml");
         let section = "section 3.3 [53]";
-        Space is required between attribute type and default values
-        in &lt;!ATTLIST...&gt; declarations.
+        let desc = "Space is required between attribute type and default values in &lt;!ATTLIST...&gt; declarations.";
+        conformance_not_wf(id, section, desc, content);
+    }
+
+    #[test]
+    #[should_panic]
+    fn conformance_not_wf_sa_065() {
 
         let id = "not-wf-sa-065";
         let content = include_str!("../tests/xmltest/not-wf/sa/065.xml");
         let section = "section 3.3 [53]";
-        Space is required between attribute name and type
-        in &lt;!ATTLIST...&gt; declarations.
+        let desc = "Space is required between attribute name and type in &lt;!ATTLIST...&gt; declarations.";
+        conformance_not_wf(id, section, desc, content);
+    }
+
+    #[test]
+    #[should_panic]
+    fn conformance_not_wf_sa_066() {
 
         let id = "not-wf-sa-066";
         let content = include_str!("../tests/xmltest/not-wf/sa/066.xml");
         let section = "section 3.3 [52]";
-        Required whitespace is missing.
+        let desc = "Required whitespace is missing.";
+        conformance_not_wf(id, section, desc, content);
+    }
+
+    #[test]
+    #[should_panic]
+    fn conformance_not_wf_sa_067() {
 
         let id = "not-wf-sa-067";
         let content = include_str!("../tests/xmltest/not-wf/sa/067.xml");
         let section = "section 3.3 [53]";
-        Space is required between attribute type and default values
-        in &lt;!ATTLIST...&gt; declarations.
+        let desc = "Space is required between attribute type and default values in &lt;!ATTLIST...&gt; declarations.";
+        conformance_not_wf(id, section, desc, content);
+    }
+
+    #[test]
+    #[should_panic]
+    fn conformance_not_wf_sa_068() {
 
         let id = "not-wf-sa-068";
         let content = include_str!("../tests/xmltest/not-wf/sa/068.xml");
         let section = "section 3.3.1 [58]";
-        Space is required between NOTATION keyword and list of
-        enumerated choices in &lt;!ATTLIST...&gt; declarations.
+        let desc = "Space is required between NOTATION keyword and list of enumerated choices in &lt;!ATTLIST...&gt; declarations.";
+        conformance_not_wf(id, section, desc, content);
+    }
 
+    #[test]
+    #[should_panic]
+    fn conformance_not_wf_sa_069() {
         let id = "not-wf-sa-069";
         let content = include_str!("../tests/xmltest/not-wf/sa/069.xml");
         let section = "section 4.2.2 [76]";
-        Space is required before an NDATA entity annotation.
+        let desc = "Space is required before an NDATA entity annotation.";
+        conformance_not_wf(id, section, desc, content);
+    }
 
+    #[test]
+    #[should_panic]
+    fn conformance_not_wf_sa_070() {
         let id = "not-wf-sa-070";
         let content = include_str!("../tests/xmltest/not-wf/sa/070.xml");
         let section = "section 2.5 [16]";
-        XML comments may not contain "--"
+        let desc = "XML comments may not contain '--'";
+        conformance_not_wf(id, section, desc, content);
+    }
+}
+
+/*
 
         let id = "not-wf-sa-071";
         let content = include_str!("../tests/xmltest/not-wf/sa/071.xml");
