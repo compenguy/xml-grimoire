@@ -67,7 +67,7 @@ DiscouragedChars = { '\u{007F}'..'\u{0084}' | '\u{0086}'..'\u{009F}' |
 // [3](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-S)
 // `S   ::=   (#x20 | #x9 | #xD | #xA)+`
 
-S = _{ "\u{0020}" | "\u{0009}" | "\u{000D}" | "\u{000A}" }
+S = _{ ("\u{0020}" | "\u{0009}" | "\u{000D}" | "\u{000A}")+ }
 
 // # Names and Tokens
 // [4](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-NameStartChar)
@@ -273,8 +273,7 @@ element = { EmptyElemTag | (STag ~ content ~ ETag) }
 // [40](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-STag)
 // `STag   ::=   '<' Name (S Attribute)* S? '>'`
 
-// NOTE: Deviation from documented schema: (S Attribute) -> (S+ Attribute)
-STag = { "<" ~ Name ~ (S+ ~ Attribute)* ~ S? ~ ">" }
+STag = { "<" ~ Name ~ (S ~ Attribute)* ~ S? ~ ">" }
 
 // [41](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-Attribute)
 // `Attribute   ::=   Name Eq AttValue`
@@ -297,15 +296,13 @@ content = { CharData? ~ ((element | Reference | CDSect | PI | Comment) ~ CharDat
 // [44](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-EmptyElemTag)
 // `EmptyElemTag   ::=   '<' Name (S Attribute)* S? '/>'`
 
-// NOTE: Deviation from documented schema: (S Attribute) -> (S+ Attribute)
-EmptyElemTag = { "<" ~ Name ~ (S+ ~ Attribute)* ~ S? ~ "/>" }
+EmptyElemTag = { "<" ~ Name ~ (S ~ Attribute)* ~ S? ~ "/>" }
 
 // # Element Type Declaration
 // [45](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-elementdecl)
 // `elementdecl   ::=   '<!ELEMENT' S Name S contentspec S? '>'`
 
-// NOTE: Deviation from documented schema: S Name S -> S+ Name S+
-elementdecl = { "<!ELEMENT" ~ S+ ~ Name ~ S+ ~ contentspec ~ S? ~ ">" }
+elementdecl = { "<!ELEMENT" ~ S ~ Name ~ S ~ contentspec ~ S? ~ ">" }
 
 // [46](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-contentspec)
 // `contentspec   ::=   'EMPTY' | 'ANY' | Mixed | children`
@@ -366,8 +363,11 @@ StringType = { "CDATA" }
 //                       'ENTITY' | 'ENTITIES' |
 //                       'NMTOKEN' | 'NMTOKENS'`
 
-TokenizedType = { "ID" | "IDREF" | "IDREFS" | "ENTITY" | "ENTITIES" |
-                  "NMTOKEN" | "NMTOKENS" }
+// Pest prioritizes alternations by the order that they're listed, and
+// won't take the longest match, so we need to list alternations that
+// are prefixes of others from longest to shortest
+TokenizedType = { "IDREFS" | "IDREF" | "ID" | "ENTITY" | "ENTITIES" |
+                  "NMTOKENS" | "NMTOKEN" }
 
 // # Enumerated Attribute Types
 // [57](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-EnumeratedType)
