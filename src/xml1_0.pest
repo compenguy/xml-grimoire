@@ -162,9 +162,10 @@ Comment = { "<!--" ~ ( (!"-" ~ Char) | ("-" ~ (!"-" ~ Char)))* ~ "-->" }
 // `PI   ::=   '<?' PITarget (S (Char* - (Char* '?>' Char*)))? '?>'`
 
 // non-standard helper production to express (Char* - (Char* '?>' Char*))
-_pi_data = _{ !(Char* ~ "?>" ~ Char*) ~ Char* }
+// We also want to expose a token for this to clients
+PIData = { (!"?>" ~ Char)* }
 // Pest expresses A - B syntax instead as !B ~ A
-PI = { "<?" ~ PITarget ~ (S ~ (_pi_data))? ~ "?>" }
+PI = { "<?" ~ PITarget ~ (S ~ (PIData))? ~ "?>" }
 
 // [17](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-PITarget)
 // `PITarget   ::=   Name - (('X' | 'x') ('M' | 'm') ('L' | 'l'))`
