@@ -6,3 +6,4 @@ mod lexer;
 mod lexer_xmltest_not_wf;
 mod lexer_xmltest_valid;
 mod lexer_xmltest_wf_invalid;
+mod token;
