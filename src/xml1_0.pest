@@ -185,7 +185,7 @@ CDSect = { CDStart ~ CData ~ CDEnd }
 // [19](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-CDStart)
 // `CDStart   ::=   '<![CDATA['`
 
-CDStart = { "<![CDATA[" }
+CDStart = _{ "<![CDATA[" }
 
 // [20](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-CData)
 // `CData   ::=   (Char* - (Char* ']]>' Char*))`
@@ -196,7 +196,7 @@ CData = { (!CDEnd ~ Char)* }
 // [21](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-CDEnd)
 // `CDEnd   ::=   ']]>'`
 
-CDEnd = { "]]>" }
+CDEnd = _{ "]]>" }
 
 // # Prolog
 // [22](https://www.w3.org/TR/2008/REC-xml-20081126/#NT-prolog)
