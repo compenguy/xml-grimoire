@@ -10,8 +10,8 @@ struct XmlLexer1_0;
 
 pub use lexer::Rule as TokenType;
 
-pub fn parse<'a>(rule: &TokenType, content: &'a str) -> Result<Token<'a>, error::Error> {
-    let mut pairs = XmlLexer1_0::parse(*rule, content)
+pub fn parse(rule: TokenType, content: &str) -> Result<Token, error::Error> {
+    let mut pairs = XmlLexer1_0::parse(rule, content)
         .map_err(|e| error::Error::PestParseError { pest_err: e })?;
     Ok(Token::from(pairs.next().ok_or(error::Error::MatchedNone)?))
 }
