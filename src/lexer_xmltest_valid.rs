@@ -22,12 +22,8 @@ mod tests {
     // https://medium.com/@forensic_matt/learning-rust-pt-4-binary-data-datetimes-and-utf-16-4d65f0aad06#d303
     fn get_utf16_bytes_as_utf8(bytes: &[u8]) -> String {
         // Convert u8 buffer to u16 buffer
-        let utf16_buf: &[u16] = unsafe {
-            std::slice::from_raw_parts(
-                bytes.as_ptr() as *const u16,
-                bytes.len() / 2,
-            )
-        };
+        let utf16_buf: &[u16] =
+            unsafe { std::slice::from_raw_parts(bytes.as_ptr() as *const u16, bytes.len() / 2) };
 
         String::from_utf16(utf16_buf).expect("Input couldn't be parsed as valid utf16")
     }
